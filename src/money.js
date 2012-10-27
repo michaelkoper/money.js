@@ -7,9 +7,7 @@ Make handling money much easier and most importantly avoid rounding
 errors.
 */
 
-var Money;
-
-Money = (function() {
+this.Money = (function() {
 
   Money.currencies = {
     'EUR': {
@@ -87,17 +85,25 @@ Money = (function() {
     }
   }
 
-  Money.prototype.toString = function() {
-    var fixed;
+  Money.prototype.toString = function(options) {
+    var amount, amountPrefix, decimals, fixed, minus, prefixNumber, replacedNumber, toString;
+    options = options || {};
     fixed = this.currency.fixed;
-    if (this.options.no_cents) {
+    if (options.no_cents) {
       fixed = 0;
     }
-    return (this.cents / this.currency.factor).toFixed(fixed).replace(/\./, this.currency.separator);
+    amount = this.cents / this.currency.factor;
+    minus = (amount < 0 ? "-" : "");
+    toString = parseInt(amount = Math.abs(+amount || 0).toFixed(fixed)) + "";
+    amountPrefix = (amountPrefix = toString.length) > 3 ? amountPrefix % 3 : 0;
+    prefixNumber = amountPrefix ? toString.substr(0, amountPrefix) + this.currency.thousands : "";
+    replacedNumber = toString.substr(amountPrefix).replace(/(\d{3})(?=\d)/g, "$1" + this.currency.thousands);
+    decimals = (fixed ? this.currency.separator + Math.abs(amount - toString).toFixed(fixed).slice(2) : "");
+    return minus + prefixNumber + replacedNumber + decimals;
   };
 
   Money.prototype.formatted = function(options) {
-    return this.currency.format(this.toString());
+    return this.currency.format(this.toString(options));
   };
 
   Money.prototype.dup = function() {
@@ -105,11 +111,11 @@ Money = (function() {
   };
 
   Money.prototype.add = function(v) {
-    return new Money(this.cents + v.toMoney().cents, this.currency);
+    return new Money(this.cents + v.toMoney(this.currency).cents, this.currency);
   };
 
   Money.prototype.subtract = function(v) {
-    return new Money(this.cents - v.toMoney().cents, this.currency);
+    return new Money(this.cents - v.toMoney(this.currency).cents, this.currency);
   };
 
   Money.prototype.multiply = function(v) {
@@ -124,6 +130,8 @@ Money = (function() {
     return this;
   };
 
+  Money.prototype.equal = function(money) {};
+
   return Money;
 
 })();
@@ -131,11 +139,9 @@ Money = (function() {
 Number.prototype.toMoney = function(cur) {
   var currency;
   currency = Money.currencies[cur] || Money.currencies[Money.defaultCurrency];
-  return new Money(this * currency.factor, cur);
+  return new Money(this, cur);
 };
 
 String.prototype.toMoney = function(cur) {
   return new Money(this, cur);
 };
-
-(typeof exports !== "undefined" && exports !== null ? exports : this).Money = Money;

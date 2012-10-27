@@ -7,7 +7,7 @@ errors.
 
 ###
 
-class Money
+class @Money
 
   @currencies = {
     'EUR': {
@@ -79,25 +79,41 @@ class Money
       @cents = 0
 
 
-  toString: ->
+
+  toString: (options)->
+    options = options || {}
     fixed = @currency.fixed
-    if @options.no_cents
+    if options.no_cents
       fixed = 0
-    (@cents / @currency.factor)
-      .toFixed(fixed)
-      .replace(/\./, @currency.separator)
+    amount = (@cents / @currency.factor)
+
+    # Make it minus if less then 0
+    minus = (if amount < 0 then "-" else "")
+    # Make it a string and possitive
+    toString = parseInt(amount = Math.abs(+amount or 0).toFixed(fixed)) + ""
+
+    # How many numbers before the first thousands
+    amountPrefix = if (amountPrefix = toString.length) > 3 then amountPrefix % 3 else 0
+    prefixNumber = if amountPrefix then toString.substr(0, amountPrefix) + @currency.thousands else ""
+
+    # number without prefix which need the thousands
+    replacedNumber = toString.substr(amountPrefix).replace(/(\d{3})(?=\d)/g, "$1" + @currency.thousands)
+
+    decimals = (if fixed then @currency.separator + Math.abs(amount - toString).toFixed(fixed).slice(2) else "")
+
+    minus + prefixNumber + replacedNumber + decimals
 
   formatted: (options)->
-    @currency.format(this.toString())
+    @currency.format(this.toString(options))
 
   dup: ->
     new Money(this, @currency)
 
   add: (v) ->
-    new Money(@cents + v.toMoney().cents, @currency)
+    new Money(@cents + v.toMoney(@currency).cents, @currency)
 
   subtract: (v) ->
-    new Money(@cents - v.toMoney().cents, @currency)
+    new Money(@cents - v.toMoney(@currency).cents, @currency)
 
   multiply: (v) ->
     new Money(Math.round(@cents * v), @currency)
@@ -108,17 +124,17 @@ class Money
   toMoney: (cur) ->
     this
 
+  equal: (money)->
+
+
 #
 # Numbers are assumed to be in human format, not cents.
 #
 Number::toMoney = (cur) ->
   currency = Money.currencies[cur] || Money.currencies[Money.defaultCurrency]
-  new Money(this * currency.factor, cur)
+  new Money(this, cur)
 
 String::toMoney = (cur) ->
   new Money(this, cur)
 
-
-# export the money class
-(exports ? this).Money = Money
 
