@@ -10,7 +10,7 @@ A lighweight javascript library for handling money in different currencies.
 Include the money.js:
 
 <pre>
-  <script type="text/javascript" src="path/to/money.js"></script>
+  &lt;script type="text/javascript" src="path/to/money.js">&lt;/script>
 </pre>
 
 I wanted to keep the javascript file small so I only implemented 4 currencies (EUR, GBP, USD, CLP) but the currencies are very easy to add/override.
