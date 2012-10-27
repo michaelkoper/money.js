@@ -64,6 +64,41 @@ describe "Money", ->
       money = new Money(1000, 'EUR')
       expect(money.divide(250).cents).toEqual(4)
 
+  describe "#equal", ->
+
+    it "is equal when same currency and same amount", ->
+      money = new Money(1000, 'EUR')
+      otherMoney = new Money(1000, 'EUR')
+      expect(money.isEqual(otherMoney)).toBeTruthy()
+
+    it "isn't equal when same currency but different amount", ->
+      money = new Money(1000, 'EUR')
+      otherMoney = new Money(1010, 'EUR')
+      expect(money.isEqual(otherMoney)).toBeFalsy()
+
+    it "isn't equal when same amount but different currency", ->
+      money = new Money(1000, 'EUR')
+      otherMoney = new Money(1000, 'USD')
+      expect(money.isEqual(otherMoney)).toBeFalsy()
+
+  describe "#isPositive", ->
+
+    it "is positive when cents are bigger than 0", ->
+      money = new Money(1000, 'EUR')
+      expect(money.isPositive()).toBeTruthy()
+
+  describe "#isNegative", ->
+
+    it "is negative when cents are smaller than 0", ->
+      money = new Money(-1000, 'EUR')
+      expect(money.isPositive()).toBeFalsy()
+
+  describe "#isZero", ->
+
+    it "is negative when cents are smaller than 0", ->
+      money = new Money(0, 'EUR')
+      expect(money.isZero()).toBeTruthy()
+
 
 
 

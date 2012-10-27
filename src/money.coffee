@@ -28,15 +28,6 @@ class @Money
       format: (base) ->
         return "$#{base}"
     }
-    'PEN': {
-      fixed: 2
-      name: 'nuevo soles'
-      factor: 100
-      separator: ','
-      thousands: '.'
-      format: (base) ->
-        return "S/.#{base}"
-    }
     'USD': {
       fixed: 2
       name: 'dollar'
@@ -46,16 +37,17 @@ class @Money
       format: (base) ->
         return "$#{base}"
     }
-    'MXN': {
+    'GBP': {
       fixed: 2
-      name: 'mexican pesos'
+      name: 'British Pound'
       factor: 100
       separator: '.'
       thousands: ','
       format: (base) ->
-        return "$#{base}"
+        return "£#{base}"
     }
   }
+
   @defaultCurrency = 'EUR'
 
   constructor: (value, cur, options) ->
@@ -77,8 +69,6 @@ class @Money
 
     else
       @cents = 0
-
-
 
   toString: (options)->
     options = options || {}
@@ -121,11 +111,15 @@ class @Money
   divide: (v) ->
     new Money(Math.round(@cents / v), @currency)
 
+  isEqual: (otherMoney)->
+    @cents == otherMoney.cents && @currency == otherMoney.currency
+
+  isPositive: -> @cents > 0
+  isNegative: -> @cents < 0
+  isZero: -> @cents == 0
+
   toMoney: (cur) ->
     this
-
-  equal: (money)->
-
 
 #
 # Numbers are assumed to be in human format, not cents.

@@ -70,7 +70,7 @@ describe("Money", function() {
       return expect(money.multiply(2.5).cents).toEqual(2500);
     });
   });
-  return describe("#divide", function() {
+  describe("#divide", function() {
     it("with factor of 2", function() {
       var money;
       money = new Money(1000, 'EUR');
@@ -85,6 +85,47 @@ describe("Money", function() {
       var money;
       money = new Money(1000, 'EUR');
       return expect(money.divide(250).cents).toEqual(4);
+    });
+  });
+  describe("#equal", function() {
+    it("is equal when same currency and same amount", function() {
+      var money, otherMoney;
+      money = new Money(1000, 'EUR');
+      otherMoney = new Money(1000, 'EUR');
+      return expect(money.isEqual(otherMoney)).toBeTruthy();
+    });
+    it("isn't equal when same currency but different amount", function() {
+      var money, otherMoney;
+      money = new Money(1000, 'EUR');
+      otherMoney = new Money(1010, 'EUR');
+      return expect(money.isEqual(otherMoney)).toBeFalsy();
+    });
+    return it("isn't equal when same amount but different currency", function() {
+      var money, otherMoney;
+      money = new Money(1000, 'EUR');
+      otherMoney = new Money(1000, 'USD');
+      return expect(money.isEqual(otherMoney)).toBeFalsy();
+    });
+  });
+  describe("#isPositive", function() {
+    return it("is positive when cents are bigger than 0", function() {
+      var money;
+      money = new Money(1000, 'EUR');
+      return expect(money.isPositive()).toBeTruthy();
+    });
+  });
+  describe("#isNegative", function() {
+    return it("is negative when cents are smaller than 0", function() {
+      var money;
+      money = new Money(-1000, 'EUR');
+      return expect(money.isPositive()).toBeFalsy();
+    });
+  });
+  return describe("#isZero", function() {
+    return it("is negative when cents are smaller than 0", function() {
+      var money;
+      money = new Money(0, 'EUR');
+      return expect(money.isZero()).toBeTruthy();
     });
   });
 });

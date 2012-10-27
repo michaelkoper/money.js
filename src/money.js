@@ -30,16 +30,6 @@ this.Money = (function() {
         return "$" + base;
       }
     },
-    'PEN': {
-      fixed: 2,
-      name: 'nuevo soles',
-      factor: 100,
-      separator: ',',
-      thousands: '.',
-      format: function(base) {
-        return "S/." + base;
-      }
-    },
     'USD': {
       fixed: 2,
       name: 'dollar',
@@ -50,14 +40,14 @@ this.Money = (function() {
         return "$" + base;
       }
     },
-    'MXN': {
+    'GBP': {
       fixed: 2,
-      name: 'mexican pesos',
+      name: 'British Pound',
       factor: 100,
       separator: '.',
       thousands: ',',
       format: function(base) {
-        return "$" + base;
+        return "£" + base;
       }
     }
   };
@@ -126,11 +116,25 @@ this.Money = (function() {
     return new Money(Math.round(this.cents / v), this.currency);
   };
 
+  Money.prototype.isEqual = function(otherMoney) {
+    return this.cents === otherMoney.cents && this.currency === otherMoney.currency;
+  };
+
+  Money.prototype.isPositive = function() {
+    return this.cents > 0;
+  };
+
+  Money.prototype.isNegative = function() {
+    return this.cents < 0;
+  };
+
+  Money.prototype.isZero = function() {
+    return this.cents === 0;
+  };
+
   Money.prototype.toMoney = function(cur) {
     return this;
   };
-
-  Money.prototype.equal = function(money) {};
 
   return Money;
 
