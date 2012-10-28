@@ -1,9 +1,15 @@
 ###
 
-Money Class
+  Money Class
 
-Make handling money much easier and most importantly avoid rounding
-errors.
+  A lighweight javascript library for handling money in different currencies.
+  http://github.com/michaelkoper/money.js
+
+  Copyright (c) 2012 Michael Koper
+
+  Dual licensed under the MIT and GPL licenses.
+
+  @version 0.1
 
 ###
 
