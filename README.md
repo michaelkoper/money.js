@@ -25,7 +25,7 @@ I wanted to keep the javascript file small so I only implemented 4 currencies (E
         separator: ','
         thousands: '.'
         format: (base) ->
-          return "S/.#{base}"
+          return "S/."+base
       },
 
       'MXN': {
@@ -35,7 +35,7 @@ I wanted to keep the javascript file small so I only implemented 4 currencies (E
         separator: '.'
         thousands: ','
         format: (base) ->
-          return "$#{base}"
+          return "$"+base
       }
 
     }
