@@ -19,23 +19,25 @@ I wanted to keep the javascript file small so I only implemented 4 currencies (E
   Money.currencies = {
 
     'PEN': {
-        fixed: 2
-        name: 'nuevo soles'
-        factor: 100
-        separator: ','
-        thousands: '.'
-        format: (base) ->
-          return "S/.#{base}"
+        fixed: 2,
+        name: 'nuevo soles',
+        factor: 100,
+        separator: ',',
+        thousands: '.',
+        format: function(base){
+          return "S/."+base
+        }
       },
 
       'MXN': {
-        fixed: 2
-        name: 'mexican pesos'
-        factor: 100
-        separator: '.'
-        thousands: ','
-        format: (base) ->
-          return "$#{base}"
+        fixed: 2,
+        name: 'mexican pesos',
+        factor: 100,
+        separator: '.',
+        thousands: ',',
+        format: function(base){
+          return "S/."+base
+        }
       }
 
     }
