@@ -26,16 +26,6 @@ this.Money = (function() {
         return "" + base + " €";
       }
     },
-    'CLP': {
-      fixed: 0,
-      name: 'pesos',
-      factor: 1,
-      separator: ',',
-      thousands: '.',
-      format: function(base) {
-        return "$" + base;
-      }
-    },
     'USD': {
       fixed: 2,
       name: 'dollar',
@@ -62,17 +52,8 @@ this.Money = (function() {
 
   function Money(value, cur, options) {
     this.options = options || {};
-    if (cur instanceof Object) {
-      this.currency = cur;
-    } else {
-      this.currency = Money.currencies[cur] || Money.currencies[Money.defaultCurrency];
-    }
-    if (value instanceof Money) {
-      this.cents = value.cents;
-      if (this.currency.name !== value.currency.name) {
-        this.currency = value.currency;
-      }
-    } else if ((typeof value === 'string') || (value instanceof String)) {
+    this.currency = Money.currencies[cur] || Money.currencies[Money.defaultCurrency];
+    if ((typeof value === 'string') || (value instanceof String)) {
       this.cents = Math.round(value.replace(/\,/, '.') * this.currency.factor);
     } else if ((typeof value === 'number') || (value instanceof Number)) {
       this.cents = Math.round(value);
@@ -84,12 +65,9 @@ this.Money = (function() {
   Money.prototype.toString = function(options) {
     var amount, amountPrefix, decimals, fixed, minus, prefixNumber, replacedNumber, toString;
     options = options || {};
-    fixed = this.currency.fixed;
-    if (options.no_cents) {
-      fixed = 0;
-    }
+    fixed = !options.no_cents ? this.currency.fixed : 0;
     amount = this.cents / this.currency.factor;
-    minus = (amount < 0 ? "-" : "");
+    minus = amount < 0 ? "-" : "";
     toString = parseInt(amount = Math.abs(+amount || 0).toFixed(fixed)) + "";
     amountPrefix = (amountPrefix = toString.length) > 3 ? amountPrefix % 3 : 0;
     prefixNumber = amountPrefix ? toString.substr(0, amountPrefix) + this.currency.thousands : "";
@@ -103,7 +81,7 @@ this.Money = (function() {
   };
 
   Money.prototype.dup = function() {
-    return new Money(this, this.currency);
+    return new Money(this.cents, this.currency);
   };
 
   Money.prototype.add = function(v) {
@@ -136,10 +114,6 @@ this.Money = (function() {
 
   Money.prototype.isZero = function() {
     return this.cents === 0;
-  };
-
-  Money.prototype.toMoney = function(cur) {
-    return this;
   };
 
   return Money;

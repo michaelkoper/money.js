@@ -9,14 +9,15 @@
 
   Dual licensed under the MIT and GPL licenses.
 
-  @version 0.1
+  @version 0.2
 
 ###
 
 class @Money
 
-  @currencies = {
-    'EUR': {
+  # Default currencies
+  @currencies =
+    'EUR':
       fixed: 2
       name: 'euro'
       factor: 100
@@ -24,17 +25,7 @@ class @Money
       thousands: '.'
       format: (base) ->
         return "#{base} €"
-    }
-    'CLP': {
-      fixed: 0
-      name: 'pesos'
-      factor: 1
-      separator: ','
-      thousands: '.'
-      format: (base) ->
-        return "$#{base}"
-    }
-    'USD': {
+    'USD':
       fixed: 2
       name: 'dollar'
       factor: 100
@@ -42,8 +33,7 @@ class @Money
       thousands: ','
       format: (base) ->
         return "$#{base}"
-    }
-    'GBP': {
+    'GBP':
       fixed: 2
       name: 'British Pound'
       factor: 100
@@ -51,40 +41,26 @@ class @Money
       thousands: ','
       format: (base) ->
         return "£#{base}"
-    }
-  }
 
   @defaultCurrency = 'EUR'
 
   constructor: (value, cur, options) ->
     @options = options || {}
-    if cur instanceof Object
-      @currency = cur
-    else
-      @currency = Money.currencies[cur] || Money.currencies[Money.defaultCurrency]
-    if value instanceof Money
-      @cents = value.cents
-      if @currency.name != value.currency.name
-        @currency = value.currency
-
-    else if ((typeof(value) == 'string') or (value instanceof String))
+    @currency = Money.currencies[cur] || Money.currencies[Money.defaultCurrency]
+    if ((typeof(value) == 'string') or (value instanceof String))
       @cents = Math.round(value.replace(/\,/, '.') * @currency.factor)
-
     else if ((typeof(value) == 'number') or (value instanceof Number))
       @cents = Math.round(value)
-
     else
       @cents = 0
 
   toString: (options)->
     options = options || {}
-    fixed = @currency.fixed
-    if options.no_cents
-      fixed = 0
+    fixed = unless options.no_cents then @currency.fixed else 0
     amount = (@cents / @currency.factor)
 
     # Make it minus if less then 0
-    minus = (if amount < 0 then "-" else "")
+    minus = if amount < 0 then "-" else ""
     # Make it a string and possitive
     toString = parseInt(amount = Math.abs(+amount or 0).toFixed(fixed)) + ""
 
@@ -103,7 +79,7 @@ class @Money
     @currency.format(this.toString(options))
 
   dup: ->
-    new Money(this, @currency)
+    new Money(this.cents, @currency)
 
   add: (v) ->
     new Money(@cents + v.toMoney(@currency).cents, @currency)
@@ -123,9 +99,6 @@ class @Money
   isPositive: -> @cents > 0
   isNegative: -> @cents < 0
   isZero: -> @cents == 0
-
-  toMoney: (cur) ->
-    this
 
 #
 # Numbers are assumed to be in human format, not cents.

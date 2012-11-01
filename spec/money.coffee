@@ -1,5 +1,36 @@
 describe "Money", ->
 
+  beforeEach ->
+    Money.currencies = {
+      'EUR': {
+        fixed: 2
+        name: 'euro'
+        factor: 100
+        separator: ','
+        thousands: '.'
+        format: (base) ->
+          return "#{base} €"
+      }
+      'CLP': {
+        fixed: 0
+        name: 'pesos'
+        factor: 1
+        separator: ','
+        thousands: '.'
+        format: (base) ->
+          return "$#{base}"
+      }
+      'USD': {
+        fixed: 2
+        name: 'dollar'
+        factor: 100
+        separator: '.'
+        thousands: ','
+        format: (base) ->
+          return "$#{base}"
+      }
+    }
+
   describe "#format", ->
 
     it "returns the monetary value as a string", ->
