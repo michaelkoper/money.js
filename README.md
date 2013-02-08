@@ -49,7 +49,7 @@ I wanted to keep the javascript file small so I only implemented 4 currencies (E
   // Create a money object of 1000,00 euro
   money = new Money(1000, 'EUR');
   money.currency; // 'EUR'
-  money.cents; // 1000
+  money.cents;    // 1000
 
   // Formatting money
   money = Money.new(100000, 'EUR')
