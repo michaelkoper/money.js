@@ -80,7 +80,3 @@ I wanted to keep the javascript file small so I only implemented 4 currencies (E
   money.isZero();     // false
 
 </pre>
-
-### Credits
-
-The money.js library is inspired by the great Ruby money library ([RubyMoney/money](https://github.com/RubyMoney/money))
