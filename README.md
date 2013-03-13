@@ -36,7 +36,7 @@ I wanted to keep the javascript file small so I only implemented 4 currencies (E
         separator: '.',
         thousands: ',',
         format: function(base){
-          return "S/."+base
+          return "$"+base
         }
       }
 
