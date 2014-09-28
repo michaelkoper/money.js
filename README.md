@@ -79,4 +79,11 @@ I wanted to keep the javascript file small so I only implemented 4 currencies (E
   money.isNegative(); // false
   money.isZero();     // false
 
+  // Is it bigger/smaller than?
+  money = new Money(1000, 'USD');
+  otherMoney = new Money(2000, 'USD');
+  money.isBiggerThan(otherMoney); // true
+  money.isSmallerThan(otherMoney); //false
+  money.isBiggerOrEqualThan(otherMoney); true
+
 </pre>
