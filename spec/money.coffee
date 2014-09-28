@@ -130,8 +130,68 @@ describe "Money", ->
       money = new Money(0, 'EUR')
       expect(money.isZero()).toBeTruthy()
 
+  describe "#isBiggerThan", ->
 
+    it "returns true if it is bigger", ->
+      money = new Money(1000, 'EUR')
+      otherMoney = new Money(0, 'EUR')
+      expect(money.isBiggerThan(otherMoney)).toBeTruthy()
 
+    it "returns false if it is smaller", ->
+      money = new Money(1000, 'EUR')
+      otherMoney = new Money(2000, 'EUR')
+      expect(money.isBiggerThan(otherMoney)).toBeFalsy()
 
+    it "returns false when it is equal", ->
+      money = new Money(1000, 'EUR')
+      otherMoney = new Money(1000, 'EUR')
+      expect(money.isBiggerThan(otherMoney)).toBeFalsy()
 
+  describe "#isBiggerOrEqualThan", ->
+    it "returns true if it is bigger", ->
+      money = new Money(1000, 'EUR')
+      otherMoney = new Money(0, 'EUR')
+      expect(money.isBiggerOrEqualThan(otherMoney)).toBeTruthy()
 
+    it "returns false if it is smaller", ->
+      money = new Money(1000, 'EUR')
+      otherMoney = new Money(2000, 'EUR')
+      expect(money.isBiggerOrEqualThan(otherMoney)).toBeFalsy()
+
+    it "returns true when it is equal", ->
+      money = new Money(1000, 'EUR')
+      otherMoney = new Money(1000, 'EUR')
+      expect(money.isBiggerOrEqualThan(otherMoney)).toBeTruthy()
+
+  describe "#isSmallerThan", ->
+
+    it "returns true if it is smaller", ->
+      money = new Money(0, 'EUR')
+      otherMoney = new Money(1000, 'EUR')
+      expect(money.isSmallerThan(otherMoney)).toBeTruthy()
+
+    it "returns false if it is bigger", ->
+      money = new Money(1000, 'EUR')
+      otherMoney = new Money(1000, 'EUR')
+      expect(money.isSmallerThan(otherMoney)).toBeFalsy()
+
+    it "returns false when it is equal", ->
+      money = new Money(1000, 'EUR')
+      otherMoney = new Money(1000, 'EUR')
+      expect(money.isSmallerThan(otherMoney)).toBeFalsy()
+
+  describe "#isSmallerOrEqualThan", ->
+    it "returns true if it is smaller", ->
+      money = new Money(0, 'EUR')
+      otherMoney = new Money(1000, 'EUR')
+      expect(money.isSmallerOrEqualThan(otherMoney)).toBeTruthy()
+
+    it "returns false if it is bigger", ->
+      money = new Money(2000, 'EUR')
+      otherMoney = new Money(1000, 'EUR')
+      expect(money.isSmallerOrEqualThan(otherMoney)).toBeFalsy()
+
+    it "returns true when it is equal", ->
+      money = new Money(1000, 'EUR')
+      otherMoney = new Money(1000, 'EUR')
+      expect(money.isSmallerOrEqualThan(otherMoney)).toBeTruthy()
