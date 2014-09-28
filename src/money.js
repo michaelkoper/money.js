@@ -6,11 +6,11 @@
   A lighweight javascript library for handling money in different currencies.
   http://github.com/michaelkoper/money.js
 
-  Copyright (c) 2012 Michael Koper
+  Copyright (c) 2014 Michael Koper
 
   Dual licensed under the MIT and GPL licenses.
 
-  @version 0.2
+  @version 0.2.1
 */
 
 this.Money = (function() {
