@@ -17,6 +17,7 @@ this.Money = (function() {
 
   Money.currencies = {
     'EUR': {
+      identifier: 'EUR',
       fixed: 2,
       name: 'euro',
       factor: 100,
@@ -27,6 +28,7 @@ this.Money = (function() {
       }
     },
     'USD': {
+      identifier: 'USD',
       fixed: 2,
       name: 'dollar',
       factor: 100,
@@ -37,6 +39,7 @@ this.Money = (function() {
       }
     },
     'GBP': {
+      identifier: 'GBP',
       fixed: 2,
       name: 'British Pound',
       factor: 100,
@@ -51,8 +54,10 @@ this.Money = (function() {
   Money.defaultCurrency = 'EUR';
 
   function Money(value, cur, options) {
+    var currency;
     this.options = options || {};
-    this.currency = Money.currencies[cur] || Money.currencies[Money.defaultCurrency];
+    currency = typeof cur === 'object' ? cur : null;
+    this.currency = currency || Money.currencies[cur] || Money.currencies[Money.defaultCurrency];
     if ((typeof value === 'string') || (value instanceof String)) {
       this.cents = Math.round(value.replace(/\,/, '.') * this.currency.factor);
     } else if ((typeof value === 'number') || (value instanceof Number)) {

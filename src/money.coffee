@@ -18,6 +18,7 @@ class @Money
   # Default currencies
   @currencies =
     'EUR':
+      identifier: 'EUR'
       fixed: 2
       name: 'euro'
       factor: 100
@@ -26,6 +27,7 @@ class @Money
       format: (base) ->
         return "#{base} €"
     'USD':
+      identifier: 'USD'
       fixed: 2
       name: 'dollar'
       factor: 100
@@ -34,6 +36,7 @@ class @Money
       format: (base) ->
         return "$#{base}"
     'GBP':
+      identifier: 'GBP'
       fixed: 2
       name: 'British Pound'
       factor: 100
@@ -46,7 +49,8 @@ class @Money
 
   constructor: (value, cur, options) ->
     @options = options || {}
-    @currency = Money.currencies[cur] || Money.currencies[Money.defaultCurrency]
+    currency = if typeof(cur) is 'object' then cur else null
+    @currency = currency || Money.currencies[cur] || Money.currencies[Money.defaultCurrency]
     if ((typeof(value) == 'string') or (value instanceof String))
       @cents = Math.round(value.replace(/\,/, '.') * @currency.factor)
     else if ((typeof(value) == 'number') or (value instanceof Number))

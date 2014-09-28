@@ -4,6 +4,7 @@ describe("Money", function() {
   beforeEach(function() {
     return Money.currencies = {
       'EUR': {
+        identifier: 'EUR',
         fixed: 2,
         name: 'euro',
         factor: 100,
@@ -14,6 +15,7 @@ describe("Money", function() {
         }
       },
       'CLP': {
+        identifier: 'CLP',
         fixed: 0,
         name: 'pesos',
         factor: 1,
@@ -24,6 +26,7 @@ describe("Money", function() {
         }
       },
       'USD': {
+        identifier: 'USD',
         fixed: 2,
         name: 'dollar',
         factor: 100,
@@ -34,6 +37,19 @@ describe("Money", function() {
         }
       }
     };
+  });
+  describe("#init", function() {
+    it("accepts a String as currency", function() {
+      var money;
+      money = new Money(1000, 'CLP');
+      return expect(money.currency.identifier).toEqual('CLP');
+    });
+    return it("accepts a Currency as currency", function() {
+      var money, otherMoney;
+      money = new Money(1000, 'CLP');
+      otherMoney = new Money(1000, money.currency);
+      return expect(otherMoney.currency.identifier).toEqual('CLP');
+    });
   });
   describe("#format", function() {
     it("returns the monetary value as a string", function() {

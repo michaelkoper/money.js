@@ -3,6 +3,7 @@ describe "Money", ->
   beforeEach ->
     Money.currencies = {
       'EUR': {
+        identifier: 'EUR'
         fixed: 2
         name: 'euro'
         factor: 100
@@ -12,6 +13,7 @@ describe "Money", ->
           return "#{base} €"
       }
       'CLP': {
+        identifier: 'CLP'
         fixed: 0
         name: 'pesos'
         factor: 1
@@ -21,6 +23,7 @@ describe "Money", ->
           return "$#{base}"
       }
       'USD': {
+        identifier: 'USD'
         fixed: 2
         name: 'dollar'
         factor: 100
@@ -30,6 +33,17 @@ describe "Money", ->
           return "$#{base}"
       }
     }
+
+  describe "#init", ->
+
+    it "accepts a String as currency", ->
+      money = new Money(1000, 'CLP')
+      expect(money.currency.identifier).toEqual('CLP')
+
+    it "accepts a Currency as currency", ->
+      money = new Money(1000, 'CLP')
+      otherMoney = new Money(1000, money.currency)
+      expect(otherMoney.currency.identifier).toEqual('CLP')
 
   describe "#format", ->
 
