@@ -10,7 +10,7 @@
 
   Dual licensed under the MIT and GPL licenses.
 
-  @version 0.2.1
+  @version 0.2.2
 */
 
 this.Money = (function() {
