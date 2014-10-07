@@ -70,7 +70,7 @@ this.Money = (function() {
   Money.prototype.toString = function(options) {
     var amount, amountPrefix, decimals, fixed, minus, prefixNumber, replacedNumber, toString;
     options = options || {};
-    fixed = !options.no_cents ? this.currency.fixed : 0;
+    fixed = options.no_cents || (options.no_cents_if_whole && (this.cents % this.currency.factor === 0)) ? 0 : this.currency.fixed;
     amount = this.cents / this.currency.factor;
     minus = amount < 0 ? "-" : "";
     toString = parseInt(amount = Math.abs(+amount || 0).toFixed(fixed)) + "";

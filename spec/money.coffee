@@ -71,6 +71,15 @@ describe "Money", ->
         money = new Money(1040, 'EUR')
         expect(money.formatted({no_cents: true})).toEqual("10 €")
 
+    describe ":no_cents_if_whole option", ->
+      it "filters when value has no decimals", ->
+        money = new Money(1000, 'EUR')
+        expect(money.formatted({no_cents_if_whole: true})).toEqual("10 €")
+
+      it "does't filter when value has decimals", ->
+        money = new Money(1040, 'EUR')
+        expect(money.formatted({no_cents_if_whole: true})).toEqual("10,40 €")
+
   describe "#add", ->
     it "adds cents", ->
       money = new Money(1040, 'EUR')

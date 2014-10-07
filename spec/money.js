@@ -69,7 +69,7 @@ describe("Money", function() {
       money = new Money(100000, 'EUR');
       return expect(money.formatted()).toEqual("1.000,00 €");
     });
-    return describe(":no_cents option", function() {
+    describe(":no_cents option", function() {
       it("filters when value has no decimals", function() {
         var money;
         money = new Money(1000, 'EUR');
@@ -83,6 +83,22 @@ describe("Money", function() {
         return expect(money.formatted({
           no_cents: true
         })).toEqual("10 €");
+      });
+    });
+    return describe(":no_cents_if_whole option", function() {
+      it("filters when value has no decimals", function() {
+        var money;
+        money = new Money(1000, 'EUR');
+        return expect(money.formatted({
+          no_cents_if_whole: true
+        })).toEqual("10 €");
+      });
+      return it("does't filter when value has decimals", function() {
+        var money;
+        money = new Money(1040, 'EUR');
+        return expect(money.formatted({
+          no_cents_if_whole: true
+        })).toEqual("10,40 €");
       });
     });
   });

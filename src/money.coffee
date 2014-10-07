@@ -60,7 +60,12 @@ class @Money
 
   toString: (options)->
     options = options || {}
-    fixed = unless options.no_cents then @currency.fixed else 0
+
+    fixed = if options.no_cents || (options.no_cents_if_whole && (@cents % @currency.factor == 0))
+      0
+    else
+      @currency.fixed
+
     amount = (@cents / @currency.factor)
 
     # Make it minus if less then 0
