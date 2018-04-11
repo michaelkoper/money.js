@@ -11,6 +11,10 @@ describe "Money", ->
         thousands: '.'
         format: (base) ->
           return "#{base} €"
+        unambiguousFormat: (base) ->
+          return "#{base} €"
+        formatWithTags: (base)->
+          return "#{base} <span>€</span>"
       }
       'CLP': {
         identifier: 'CLP'
@@ -31,7 +35,26 @@ describe "Money", ->
         thousands: ','
         format: (base) ->
           return "$#{base}"
+        unambiguousFormat: (base) ->
+          return "$#{base}"
+        formatWithTags: (base)->
+          return "<span>$</span>#{base}"
       }
+      'AUD': {
+        identifier: 'AUD'
+        fixed: 2
+        name: 'Australian Dollar'
+        factor: 100
+        separator: '.'
+        thousands: ','
+        format: (base) ->
+          return "$#{base}"
+        unambiguousFormat: (base) ->
+          return "AU$#{base}"
+        formatWithTags: (base)->
+          return "<span>AU$</span>#{base}"
+      }
+
     }
 
   describe "#init", ->
@@ -79,6 +102,17 @@ describe "Money", ->
       it "does't filter when value has decimals", ->
         money = new Money(1040, 'EUR')
         expect(money.formatted({no_cents_if_whole: true})).toEqual("10,40 €")
+
+  describe "formattedUnambiguous", ->
+
+    it "returns an unambiguous format", ->
+      money = new Money(12345, 'AUD')
+      expect(money.formattedUnambiguous()).toEqual("AU$123.45")
+
+  describe "formattedUnambiguous", ->
+    it "returns an format with tags", ->
+      money = new Money(12345, 'AUD')
+      expect(money.formattedWithTags()).toEqual("<span>AU$</span>123.45")
 
   describe "#add", ->
     it "adds cents", ->

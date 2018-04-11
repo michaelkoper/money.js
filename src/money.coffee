@@ -9,7 +9,7 @@
 
   Dual licensed under the MIT and GPL licenses.
 
-  @version 0.2.2
+  @version 0.2.3
 
 ###
 
@@ -26,6 +26,10 @@ class @Money
       thousands: '.'
       format: (base) ->
         return "#{base} €"
+      unambiguousFormat: (base) ->
+        return "#{base} €"
+      formatWithTags: (base)->
+        return "#{base} <span>€</span>"
     'USD':
       identifier: 'USD'
       fixed: 2
@@ -35,6 +39,10 @@ class @Money
       thousands: ','
       format: (base) ->
         return "$#{base}"
+      unambiguousFormat: (base) ->
+        return "$#{base}"
+      formatWithTags: (base)->
+        return "<span>$</span>#{base}"
     'GBP':
       identifier: 'GBP'
       fixed: 2
@@ -44,6 +52,23 @@ class @Money
       thousands: ','
       format: (base) ->
         return "£#{base}"
+      unambiguousFormat: (base) ->
+        return "£#{base}"
+      formatWithTags: (base)->
+        return "<span>£</span>#{base}"
+    'AUD':
+      identifier: 'AUD'
+      fixed: 2
+      name: 'Australian Dollar'
+      factor: 100
+      separator: '.'
+      thousands: ','
+      format: (base) ->
+        return "$#{base}"
+      unambiguousFormat: (base) ->
+        return "AU$#{base}"
+      formatWithTags: (base)->
+        return "<span>AU$</span>#{base}"
 
   @defaultCurrency = 'EUR'
 
@@ -86,6 +111,12 @@ class @Money
 
   formatted: (options)->
     @currency.format(this.toString(options))
+
+  formattedUnambiguous: (options)->
+    @currency.unambiguousFormat(this.toString(options))
+
+  formattedWithTags: (options)->
+    @currency.formatWithTags(this.toString(options))
 
   dup: ->
     new Money(this.cents, @currency)
